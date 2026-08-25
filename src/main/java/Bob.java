@@ -1,3 +1,4 @@
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Bob {
@@ -13,14 +14,27 @@ public class Bob {
         String exit = "Bye. Hope to see you again soon!\n";
         String divider = "____________________________________________________________\n";
         System.out.println(divider + banner + intro + start + divider);
+        String[] tasks = new String[100];
+        int taskCount = 0;
         try (Scanner in = new Scanner(System.in)) {
             while (true) {
                 String input = in.nextLine();
-                if (input.trim().equalsIgnoreCase("Bye")) {
+                if (input.trim().equalsIgnoreCase("bye")) {
                     System.out.println(divider + exit + divider);
                     break;
                 }
-                System.out.println(divider + input + "\n" + divider);
+                else if (input.trim().equalsIgnoreCase("list")) {
+                    System.out.println(divider);
+                    for (int i = 0; i < taskCount; i++) {
+                        System.out.println((i + 1) + ". " + tasks[i]);
+                    }
+                    System.out.println(divider);
+                }
+                else {
+                    System.out.println(divider + "added: " + input.trim() + '\n' + divider);
+                    tasks[taskCount] = input.trim();
+                    taskCount++;
+                }
             }
         }
     }
