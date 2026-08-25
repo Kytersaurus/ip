@@ -12,7 +12,16 @@ public class Bob {
         String start = "What can I do for you?\n";
         String exit = "Bye. Hope to see you again soon!\n";
         String divider = "____________________________________________________________\n";
-        System.out.println(divider + banner + intro + start + divider + exit + divider);
-
+        System.out.println(divider + banner + intro + start + divider);
+        try (Scanner in = new Scanner(System.in)) {
+            while (true) {
+                String input = in.nextLine();
+                if (input.trim().equalsIgnoreCase("Bye")) {
+                    System.out.println(divider + exit + divider);
+                    break;
+                }
+                System.out.println(divider + input + "\n" + divider);
+            }
+        }
     }
 }
