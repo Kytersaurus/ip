@@ -36,11 +36,13 @@ public class Bob {
                     int index = Integer.parseInt(input.substring(5)) - 1;
                     if (index >= 0 && index < taskCount) {
                         tasks[index].markAsDone();
+                        System.out.println(divider + "Ok, I've marked this task as done:\n" + "[" + tasks[index].getStatusIcon() + "] " + tasks[index].getDescription() + "\n" + divider);
                     }
                 } else if (input.startsWith("unmark ")) {
                     int index = Integer.parseInt(input.substring(7)) - 1;
                     if (index >= 0 && index < taskCount) {
                         tasks[index].markAsNotDone();
+                        System.out.println(divider + "Ok, I've marked this task as not done:\n" + "[" + tasks[index].getStatusIcon() + "] " + tasks[index].getDescription() + "\n" + divider);
                     }
                 } else if (taskCount < MAX_TASKS) {
                     tasks[taskCount++] = new Task(input);
