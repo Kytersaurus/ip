@@ -18,6 +18,10 @@ public class Bob {
                 + "What can I do for you?\n" + divider);
 
         Task[] tasks = new Task[MAX_TASKS];
+        runCommandLoop(tasks, divider);
+    }
+
+    private static void runCommandLoop(Task[] tasks, String divider) {
         int taskCount = 0;
         try (Scanner in = new Scanner(System.in)) {
             while (in.hasNextLine()) {
@@ -26,25 +30,11 @@ public class Bob {
                     System.out.println(divider + "Bye. Hope to see you again soon!\n" + divider);
                     break;
                 } else if (input.equalsIgnoreCase("list")) {
-                    System.out.println(divider + "Here are the tasks in your list:");
-                    for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + "." + tasks[i]);
-                    }
-                    System.out.println(divider);
+                    printTaskList(tasks, taskCount, divider);
                 } else if (input.startsWith("mark ")) {
-                    int index = Integer.parseInt(input.substring(5)) - 1;
-                    if (index >= 0 && index < taskCount) {
-                        tasks[index].markAsDone();
-                        System.out.println(divider + "Ok, I've marked this task as done:\n"
-                                + tasks[index] + "\n" + divider);
-                    }
+                    markTask(input, tasks, taskCount, divider);
                 } else if (input.startsWith("unmark ")) {
-                    int index = Integer.parseInt(input.substring(7)) - 1;
-                    if (index >= 0 && index < taskCount) {
-                        tasks[index].markAsNotDone();
-                        System.out.println(divider + "Ok, I've marked this task as not done:\n"
-                                + tasks[index] + "\n" + divider);
-                    }
+                    unmarkTask(input, tasks, taskCount, divider);
                 } else if (taskCount < MAX_TASKS) {
                     Task task = createTask(input);
                     tasks[taskCount++] = task;
@@ -53,6 +43,32 @@ public class Bob {
                             + " tasks in the list.\n" + divider);
                 }
             }
+        }
+    }
+
+    private static void printTaskList(Task[] tasks, int taskCount, String divider) {
+        System.out.println(divider + "Here are the tasks in your list:");
+        for (int i = 0; i < taskCount; i++) {
+            System.out.println((i + 1) + "." + tasks[i]);
+        }
+        System.out.println(divider);
+    }
+
+    private static void markTask(String input, Task[] tasks, int taskCount, String divider) {
+        int index = Integer.parseInt(input.substring(5)) - 1;
+        if (index >= 0 && index < taskCount) {
+            tasks[index].markAsDone();
+            System.out.println(divider + "Ok, I've marked this task as done:\n"
+                    + tasks[index] + "\n" + divider);
+        }
+    }
+
+    private static void unmarkTask(String input, Task[] tasks, int taskCount, String divider) {
+        int index = Integer.parseInt(input.substring(7)) - 1;
+        if (index >= 0 && index < taskCount) {
+            tasks[index].markAsNotDone();
+            System.out.println(divider + "Ok, I've marked this task as not done:\n"
+                    + tasks[index] + "\n" + divider);
         }
     }
 
