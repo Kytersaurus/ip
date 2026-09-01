@@ -28,27 +28,56 @@ public class Bob {
                 } else if (input.equalsIgnoreCase("list")) {
                     System.out.println(divider + "Here are the tasks in your list:");
                     for (int i = 0; i < taskCount; i++) {
-                        System.out.println((i + 1) + "." + "[" + tasks[i].getStatusIcon() + "] "
-                                + tasks[i].getDescription());
+                        System.out.println((i + 1) + ".[" + tasks[i].getTypeIcon() + "]["
+                                + tasks[i].getStatusIcon() + "] " + tasks[i].getDisplayText());
                     }
                     System.out.println(divider);
                 } else if (input.startsWith("mark ")) {
                     int index = Integer.parseInt(input.substring(5)) - 1;
                     if (index >= 0 && index < taskCount) {
                         tasks[index].markAsDone();
-                        System.out.println(divider + "Ok, I've marked this task as done:\n" + "[" + tasks[index].getStatusIcon() + "] " + tasks[index].getDescription() + "\n" + divider);
+                        System.out.println(divider + "Ok, I've marked this task as done:\n["
+                                + tasks[index].getTypeIcon() + "][" + tasks[index].getStatusIcon() + "] "
+                                + tasks[index].getDisplayText() + "\n" + divider);
                     }
                 } else if (input.startsWith("unmark ")) {
                     int index = Integer.parseInt(input.substring(7)) - 1;
                     if (index >= 0 && index < taskCount) {
                         tasks[index].markAsNotDone();
-                        System.out.println(divider + "Ok, I've marked this task as not done:\n" + "[" + tasks[index].getStatusIcon() + "] " + tasks[index].getDescription() + "\n" + divider);
+                        System.out.println(divider + "Ok, I've marked this task as not done:\n["
+                                + tasks[index].getTypeIcon() + "][" + tasks[index].getStatusIcon() + "] "
+                                + tasks[index].getDisplayText() + "\n" + divider);
                     }
                 } else if (taskCount < MAX_TASKS) {
-                    tasks[taskCount++] = new Task(input);
-                    System.out.println(divider + "added: " + input + '\n' + divider);
+                    Task task = createTask(input);
+                    tasks[taskCount++] = task;
+                    System.out.println(divider + "Got it. I've added this task:\n  ["
+                            + task.getTypeIcon() + "][" + task.getStatusIcon() + "] "
+                            + task.getDisplayText() + "\nNow you have " + taskCount
+                            + " tasks in the list.\n" + divider);
                 }
             }
         }
+    }
+
+    private static Task createTask(String input) {
+        if (input.startsWith("deadline ")) {
+            String[] parts = input.substring(9).split(" /by ", 2);
+            return new Task(parts[0], "D", parts.length > 1 ? parts[1] : "");
+        }
+        if (input.startsWith("event ")) {
+            String[] parts = input.substring(6).split(" /from ", 2);
+            if (parts.length == 2) {
+                String[] eventDetails = parts[1].split(" /to ", 2);
+                String dateTime = eventDetails[0]
+                        + (eventDetails.length > 1 ? " to: " + eventDetails[1] : "");
+                return new Task(parts[0], "E", dateTime);
+            }
+            return new Task(input.substring(6), "E", "");
+        }
+        if (input.startsWith("todo ")) {
+            return new Task(input.substring(5), "T", "");
+        }
+        return new Task(input, "T", "");
     }
 }
