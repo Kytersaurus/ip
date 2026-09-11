@@ -1,4 +1,4 @@
-package ip;
+package Bob;
 
 public class Deadline extends Task {
     private final String by;

@@ -1,4 +1,4 @@
-package ip;
+package Bob;
 
 public class Task {
     private final String description;

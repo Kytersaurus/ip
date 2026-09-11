@@ -1,4 +1,4 @@
-package ip;
+package Bob;
 
 public class Event extends Task {
     protected String from, to;

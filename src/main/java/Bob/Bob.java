@@ -1,4 +1,4 @@
-package ip;
+package Bob;
 
 import java.util.Scanner;
 
