@@ -7,7 +7,7 @@ public class Bob {
     private static final int MAX_TASKS = 100;
 
     /** Starts the B.O.B. command-line application. */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EmptyError, SyntaxError {
         String divider = "____________________________________________________________\n";
         String banner = " ____     ___    ____  \n"
                 + "| |_) )  / _ \\  | |_) ) \n"
@@ -21,29 +21,45 @@ public class Bob {
         runCommandLoop(tasks, divider);
     }
 
-    private static void runCommandLoop(Task[] tasks, String divider) {
+    private static void runCommandLoop(Task[] tasks, String divider) throws SyntaxError, EmptyError {
         int taskCount = 0;
         try (Scanner in = new Scanner(System.in)) {
             while (in.hasNextLine()) {
                 String input = in.nextLine().trim();
-                if (input.equalsIgnoreCase("bye")) {
-                    System.out.println(divider + "Bye. Hope to see you again soon!\n" + divider);
-                    break;
-                } else if (input.equalsIgnoreCase("list")) {
-                    printTaskList(tasks, taskCount, divider);
-                } else if (input.startsWith("mark ")) {
-                    markTask(input, tasks, taskCount, divider);
-                } else if (input.startsWith("unmark ")) {
-                    unmarkTask(input, tasks, taskCount, divider);
-                } else if (taskCount < MAX_TASKS) {
-                    Task task = createTask(input);
-                    tasks[taskCount++] = task;
-                    System.out.println(divider + "Got it. I've added this task:\n" +
-                             task + "\nNow you have " + taskCount
-                            + " tasks in the list.\n" + divider);
+
+                try {
+                    if (input.equalsIgnoreCase("bye")) {
+                        System.out.println(divider + "Bye. Hope to see you again soon!\n" + divider);
+                        break;
+                    } else if (input.equalsIgnoreCase("list")) {
+                        printTaskList(tasks, taskCount, divider);
+                    } else if (input.startsWith("mark ")) {
+                        markTask(input, tasks, taskCount, divider);
+                    } else if (input.startsWith("unmark ")) {
+                        unmarkTask(input, tasks, taskCount, divider);
+                    } else if (!input.isEmpty()) {
+                        if (taskCount < MAX_TASKS) {
+                            Task task = createTask(input);
+                            if (task == null) {
+                                throw new SyntaxError();
+                            } else {
+                                tasks[taskCount++] = task;
+                                System.out.println(divider + "Got it. I've added this task:\n" +
+                                        task + "\nNow you have " + taskCount
+                                        + " tasks in the list.\n" + divider);
+                            }
+                        }
+                    }
+                } catch (EmptyError e) {
+                    System.out.println(e.getErrorMessage());
+                } catch (SyntaxError e) {
+                    System.out.println(e.getErrorMessage());
                 }
             }
         }
+    }
+    private static void parseInput() {
+
     }
 
     private static void printTaskList(Task[] tasks, int taskCount, String divider) {
@@ -72,7 +88,7 @@ public class Bob {
         }
     }
 
-    private static Task createTask(String input) {
+    private static Task createTask(String input) throws SyntaxError, EmptyError {
         if (input.startsWith("deadline ")) {
             String[] parts = input.substring(9).split(" /by ", 2);
             return new Deadline(parts[0], parts.length > 1 ? parts[1] : "");
@@ -90,9 +106,16 @@ public class Bob {
             }
             return new Event(input.substring(6), "", "");
         }
-        if (input.startsWith("todo ")) {
-            return new Todo(input.substring(5));
+        if (input.equals("todo") || input.startsWith("todo ")) {
+            String task = input.length() > 4 ? input.substring(4).trim() : "";
+                if (task.isEmpty()) {
+                    throw new EmptyError();
+                } else {
+                    return new Todo(task);
+                }
         }
-        return new Todo(input);
+        else {
+            throw new SyntaxError();
+        }
     }
 }
