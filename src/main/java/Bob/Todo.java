@@ -1,4 +1,4 @@
-package ip;
+package Bob;
 
 public class Todo extends Task {
     public Todo(String description) {
