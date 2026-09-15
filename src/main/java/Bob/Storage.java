@@ -41,9 +41,9 @@ public class Storage {
     }
 
     /**
-     * Loads saved tasks into the supplied task array.
+     * Loads saved tasks into the supplied task list.
      *
-     * @param tasks array that receives the loaded tasks
+     * @param tasks list that receives the loaded tasks
      * @return number of tasks loaded
      * @throws IOException if the task file cannot be read
      */
@@ -62,8 +62,9 @@ public class Storage {
             int taskCount = 0;
             for (String line : Files.readAllLines(TASK_FILE, StandardCharsets.UTF_8)) {
                 Task task = parseTask(line);
-                if (task != null && taskCount < tasks.size()) {
-                    tasks.add(taskCount++, task);
+                if (task != null) {
+                    tasks.add(task);
+                    taskCount++;
                 }
             }
             return taskCount;
