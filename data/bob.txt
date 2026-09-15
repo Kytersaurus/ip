@@ -1,0 +1,7 @@
+T | 1 | bread
+D | 1 | homework | tmr
+E | 0 | bruh | 67 | 69
+T | 0 | read book
+D | 0 | return book | June 6th
+T | 0 | huh
+T | 1 | nice
