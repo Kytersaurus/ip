@@ -1,14 +1,18 @@
 package Bob;
 
 import java.util.Scanner;
+import java.util.ArrayList;
 
 /** Runs the B.O.B. command-line task manager. */
 public class Bob {
+    private static final String divider = "____________________________________________________________\n";
     private static final int MAX_TASKS = 100;
-
+    static int taskCount = 0;
+    static ArrayList<Task> tasks = new ArrayList<>(MAX_TASKS);
+    private static final String itemDeleted = "Noted. I've removed this task: ";
     /** Starts the B.O.B. command-line application. */
     public static void main(String[] args) throws EmptyError, SyntaxError {
-        String divider = "____________________________________________________________\n";
+
         String banner = " ____     ___    ____  \n"
                 + "| |_) )  / _ \\  | |_) ) \n"
                 + "|  _ \\  | | | | |  _ \\ \n"
@@ -16,13 +20,10 @@ public class Bob {
                 + "|____/   \\___/  |____/ \n";
         System.out.println(divider + banner + "Hello! I'm B.O.B. (Best OpenAI Bot)\n"
                 + "What can I do for you?\n" + divider);
-
-        Task[] tasks = new Task[MAX_TASKS];
-        runCommandLoop(tasks, divider);
+        runCommandLoop();
     }
 
-    private static void runCommandLoop(Task[] tasks, String divider) throws SyntaxError, EmptyError {
-        int taskCount = 0;
+    private static void runCommandLoop() {
         try (Scanner in = new Scanner(System.in)) {
             while (in.hasNextLine()) {
                 String input = in.nextLine().trim();
@@ -32,18 +33,21 @@ public class Bob {
                         System.out.println(divider + "Bye. Hope to see you again soon!\n" + divider);
                         break;
                     } else if (input.equalsIgnoreCase("list")) {
-                        printTaskList(tasks, taskCount, divider);
+                        printTaskList();
                     } else if (input.startsWith("mark ")) {
-                        markTask(input, tasks, taskCount, divider);
+                        markTask(input);
                     } else if (input.startsWith("unmark ")) {
-                        unmarkTask(input, tasks, taskCount, divider);
+                        unmarkTask(input);
+                    } else if (input.startsWith("delete ")) {
+                        deleteTask(input);
                     } else if (!input.isEmpty()) {
                         if (taskCount < MAX_TASKS) {
                             Task task = createTask(input);
                             if (task == null) {
                                 throw new SyntaxError();
                             } else {
-                                tasks[taskCount++] = task;
+                                tasks.add(taskCount, task);
+                                taskCount++;
                                 System.out.println(divider + "Got it. I've added this task:\n" +
                                         task + "\nNow you have " + taskCount
                                         + " tasks in the list.\n" + divider);
@@ -54,6 +58,8 @@ public class Bob {
                     System.out.println(e.getErrorMessage());
                 } catch (SyntaxError e) {
                     System.out.println(e.getErrorMessage());
+                } catch (IndexOutOfBoundsError e) {
+                    System.out.println(e.getMessage());
                 }
             }
         }
@@ -62,29 +68,29 @@ public class Bob {
 
     }
 
-    private static void printTaskList(Task[] tasks, int taskCount, String divider) {
+    private static void printTaskList() {
         System.out.println(divider + "Here are the tasks in your list:");
         for (int i = 0; i < taskCount; i++) {
-            System.out.println((i + 1) + "." + tasks[i]);
+            System.out.println((i + 1) + "." + tasks.get(i));
         }
         System.out.println(divider);
     }
 
-    private static void markTask(String input, Task[] tasks, int taskCount, String divider) {
+    private static void markTask(String input) {
         int index = Integer.parseInt(input.substring(5)) - 1;
         if (index >= 0 && index < taskCount) {
-            tasks[index].markAsDone();
+            tasks.get(index).markAsDone();
             System.out.println(divider + "Ok, I've marked this task as done:\n"
-                    + tasks[index] + "\n" + divider);
+                    + tasks.get(index) + "\n" + divider);
         }
     }
 
-    private static void unmarkTask(String input, Task[] tasks, int taskCount, String divider) {
+    private static void unmarkTask(String input) {
         int index = Integer.parseInt(input.substring(7)) - 1;
         if (index >= 0 && index < taskCount) {
-            tasks[index].markAsNotDone();
+            tasks.get(index).markAsNotDone();
             System.out.println(divider + "Ok, I've marked this task as not done:\n"
-                    + tasks[index] + "\n" + divider);
+                    + tasks.get(index) + "\n" + divider);
         }
     }
 
@@ -113,9 +119,19 @@ public class Bob {
                 } else {
                     return new Todo(task);
                 }
-        }
-        else {
+        } else {
             throw new SyntaxError();
+        }
+    }
+
+    private static void deleteTask(String input) throws IndexOutOfBoundsError {
+        int index = Integer.parseInt(input.substring(7)) -1;
+        if (index > taskCount) {
+            throw new IndexOutOfBoundsError();
+        } else {
+            System.out.println(divider + itemDeleted + "\n  " + tasks.get(index) + "\nNow you have " + (taskCount-1) + " tasks in the list\n" + divider);
+            tasks.remove(index);
+            taskCount--;
         }
     }
 }
