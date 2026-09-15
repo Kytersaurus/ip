@@ -71,7 +71,7 @@ public class Bob {
         }
     }
 
-    private static int loadTasks(Task[] tasks) {
+    private static int loadTasks(ArrayList<Task> tasks) {
         try {
             return Storage.loadTasks(tasks);
         } catch (IOException e) {

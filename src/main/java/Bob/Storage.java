@@ -23,11 +23,11 @@ public class Storage {
      * @param taskCount number of occupied entries in {@code tasks}
      * @throws IOException if the directory or file cannot be written
      */
-    public static void saveTasks(Task[] tasks, int taskCount) throws IOException {
+    public static void saveTasks(ArrayList<Task> tasks, int taskCount) throws IOException {
         validateTaskList(tasks, taskCount);
         List<String> lines = new ArrayList<>();
         for (int i = 0; i < taskCount; i++) {
-            lines.add(formatTask(tasks[i]));
+            lines.add(formatTask(tasks.get(i)));
         }
 
         try {
@@ -47,7 +47,7 @@ public class Storage {
      * @return number of tasks loaded
      * @throws IOException if the task file cannot be read
      */
-    public static int loadTasks(Task[] tasks) throws IOException {
+    public static int loadTasks(ArrayList<Task> tasks) throws IOException {
         if (tasks == null) {
             throw new IllegalArgumentException("Task array cannot be null");
         }
@@ -62,8 +62,8 @@ public class Storage {
             int taskCount = 0;
             for (String line : Files.readAllLines(TASK_FILE, StandardCharsets.UTF_8)) {
                 Task task = parseTask(line);
-                if (task != null && taskCount < tasks.length) {
-                    tasks[taskCount++] = task;
+                if (task != null && taskCount < tasks.size()) {
+                    tasks.add(taskCount++, task);
                 }
             }
             return taskCount;
@@ -72,15 +72,15 @@ public class Storage {
         }
     }
 
-    private static void validateTaskList(Task[] tasks, int taskCount) {
+    private static void validateTaskList(ArrayList<Task> tasks, int taskCount) {
         if (tasks == null) {
             throw new IllegalArgumentException("Task array cannot be null");
         }
-        if (taskCount < 0 || taskCount > tasks.length) {
+        if (taskCount < 0 || taskCount > tasks.size()) {
             throw new IllegalArgumentException("Task count is outside the array bounds");
         }
         for (int i = 0; i < taskCount; i++) {
-            if (tasks[i] == null) {
+            if (tasks.get(i) == null) {
                 throw new IllegalArgumentException("Task list contains a null task");
             }
         }
