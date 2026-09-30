@@ -15,7 +15,7 @@ java {
 }
 
 application {
-    mainClass = 'Bob.Bob'
+    mainClass = 'bob.Bob'
 }
 
 tasks.named('shadowJar') {
