@@ -11,6 +11,9 @@ public class Todo extends Task {
         super(description);
     }
 
+    /**
+     * Returns the todo marker, completion status, and task description.
+     */
     @Override
     public String toString() {
         return "[T]" + super.toString();
