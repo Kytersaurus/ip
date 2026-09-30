@@ -50,7 +50,21 @@ public class Ui implements AutoCloseable {
      * Shows the occupied entries in the task list, numbered from one.
      */
     public void showTaskList(TaskList tasks) {
-        System.out.println(DIVIDER + "Here are the tasks in your list:");
+        showTaskList(tasks, "Here are the tasks in your list:");
+    }
+
+    /**
+     * Shows matching tasks numbered from one, or an empty result under the heading.
+     */
+    public void showMatchingTasks(TaskList tasks) {
+        showTaskList(tasks, "Here are the matching tasks in your list:");
+    }
+
+    /**
+     * Displays a numbered task list between divider lines using the supplied heading.
+     */
+    private void showTaskList(TaskList tasks, String heading) {
+        System.out.println(DIVIDER + heading);
         for (int i = 0; i < tasks.size(); i++) {
             System.out.println((i + 1) + "." + tasks.get(i));
         }
@@ -96,6 +110,9 @@ public class Ui implements AutoCloseable {
         System.out.println(message);
     }
 
+    /**
+     * Closes the input scanner and its underlying standard input stream.
+     */
     @Override
     public void close() {
         input.close();

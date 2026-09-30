@@ -19,6 +19,10 @@ public class MarkCommand extends Command {
         this.index = index;
     }
 
+    /**
+     * Validates the index, marks the task as done, then saves and displays its status.
+     * If saving fails, reports the failure and still displays the in-memory result.
+     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws InvalidTaskNumberError {
         if (index < 0 || index >= tasks.size()) {
