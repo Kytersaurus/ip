@@ -18,6 +18,12 @@ application {
     mainClass = 'bob.Bob'
 }
 
+tasks.named('jar') {
+    manifest {
+        attributes 'Main-Class': application.mainClass.get()
+    }
+}
+
 tasks.named('shadowJar') {
     archiveBaseName = 'bob'
     archiveClassifier = 'all'
