@@ -1,6 +1,6 @@
-# B.O.B. — Best OpenAI Bot
+# B.O.B.  USER GUIDE
 
-B.O.B. is a terminal chatbot for keeping track of tasks, deadlines, and events.
+B.O.B. — Best OpenAI Bot is a terminal chatbot for keeping track of tasks, deadlines, and events.
 
 ## Quick start: run the JAR
 
@@ -26,7 +26,6 @@ B.O.B. is a terminal chatbot for keeping track of tasks, deadlines, and events.
    ____________________________________________________________
    ```
 
-## B.O.B. User Guide
 
 ### Command format
 
