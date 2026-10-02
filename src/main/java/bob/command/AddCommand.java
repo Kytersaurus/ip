@@ -25,11 +25,6 @@ public class AddCommand extends Command {
         this.input = input;
     }
 
-    /**
-     * Checks capacity, parses and adds a task, then saves and displays the result.
-     * Reports a full list without parsing the input or adding a task.
-     * If saving fails, reports the failure and still displays the in-memory result.
-     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws EmptyError, SyntaxError {
         if (tasks.isFull()) {

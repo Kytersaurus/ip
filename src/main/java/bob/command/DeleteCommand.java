@@ -22,10 +22,6 @@ public class DeleteCommand extends Command {
         this.index = index;
     }
 
-    /**
-     * Removes the selected task, then saves and displays the updated task count.
-     * If saving fails, reports the failure and still displays the in-memory result.
-     */
     @Override
     public void execute(TaskList tasks, Ui ui, Storage storage) throws IndexOutOfBoundsError {
         Task deletedTask = tasks.remove(index);

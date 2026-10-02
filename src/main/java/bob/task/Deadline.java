@@ -14,16 +14,10 @@ public class Deadline extends Task {
         this.by = by;
     }
 
-    /**
-     * Returns the deadline text.
-     */
     public String getBy() {
         return by;
     }
 
-    /**
-     * Returns the deadline marker, completion status, description, and deadline.
-     */
     @Override
     public String toString() {
         return "[D]" + super.toString() + " (by: " + by + ")";

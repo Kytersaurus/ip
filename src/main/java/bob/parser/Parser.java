@@ -5,7 +5,6 @@ import bob.command.Command;
 import bob.command.DeleteCommand;
 import bob.command.EmptyCommand;
 import bob.command.ExitCommand;
-import bob.command.FindCommand;
 import bob.command.ListCommand;
 import bob.command.MarkCommand;
 import bob.command.UnmarkCommand;
@@ -21,10 +20,8 @@ import bob.task.Todo;
  * Interprets user commands without changing tasks or performing input and output.
  */
 public final class Parser {
-    /**
-     * Prevents instantiation of this stateless utility class.
-     */
     private Parser() {
+        // Prevent instantiation of this stateless utility class.
     }
 
     /**
@@ -35,20 +32,13 @@ public final class Parser {
      * @param fullCommand user input, which may contain surrounding whitespace.
      * @return command to execute.
      * @throws InvalidTaskNumberError if a mark, unmark, or delete argument is not an integer.
-     * @throws SyntaxError if a find command has no keyword.
      */
-    public static Command parse(String fullCommand) throws InvalidTaskNumberError, SyntaxError {
+    public static Command parse(String fullCommand) throws InvalidTaskNumberError {
         String input = fullCommand.trim();
         if (input.equalsIgnoreCase("bye")) {
             return new ExitCommand();
         } else if (input.equalsIgnoreCase("list")) {
             return new ListCommand();
-        } else if (input.equals("find") || input.startsWith("find ")) {
-            String keyword = input.substring(4).trim();
-            if (keyword.isEmpty()) {
-                throw new SyntaxError();
-            }
-            return new FindCommand(keyword);
         } else if (input.startsWith("mark ")) {
             return new MarkCommand(parseTaskIndex(input));
         } else if (input.startsWith("unmark ")) {

@@ -5,7 +5,6 @@ import bob.exception.IndexOutOfBoundsError;
 import bob.exception.InvalidTaskNumberError;
 import bob.exception.SavingError;
 import bob.exception.SyntaxError;
-import bob.exception.TaskNotFoundError;
 import bob.storage.Storage;
 import bob.task.TaskList;
 import bob.ui.Ui;
@@ -24,10 +23,9 @@ public abstract class Command {
      * @throws EmptyError if an addition has an empty description.
      * @throws InvalidTaskNumberError if a mark or unmark index is outside the list.
      * @throws SyntaxError if an addition has invalid syntax.
-     * @throws TaskNotFoundError if no task description matches a search keyword.
      */
     public abstract void execute(TaskList tasks, Ui ui, Storage storage)
-            throws IndexOutOfBoundsError, EmptyError, SyntaxError, InvalidTaskNumberError, TaskNotFoundError;
+            throws IndexOutOfBoundsError, EmptyError, SyntaxError, InvalidTaskNumberError;
 
     /**
      * Saves changed tasks and reports a failure while retaining the in-memory change.

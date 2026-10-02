@@ -5,7 +5,6 @@ import bob.exception.EmptyError;
 import bob.exception.IndexOutOfBoundsError;
 import bob.exception.InvalidTaskNumberError;
 import bob.exception.SyntaxError;
-import bob.exception.TaskNotFoundError;
 import bob.parser.Parser;
 import bob.storage.Storage;
 import bob.task.TaskList;
@@ -22,7 +21,7 @@ public class Bob {
     /**
      * Starts the B.O.B. command-line application.
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws EmptyError, SyntaxError {
         ui = new Ui();
         storage = new Storage("./data/bob.txt");
         ui.showWelcome();
@@ -44,11 +43,11 @@ public class Bob {
                     if (command.isExit()) {
                         break;
                     }
-                } catch (EmptyError | SyntaxError | IndexOutOfBoundsError | InvalidTaskNumberError
-                        | TaskNotFoundError e) {
+                } catch (EmptyError | SyntaxError | IndexOutOfBoundsError | InvalidTaskNumberError e) {
                     ui.showError(e.getMessage());
                 }
             }
         }
     }
+
 }

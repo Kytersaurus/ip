@@ -15,16 +15,10 @@ public class Task {
         this.isDone = false;
     }
 
-    /**
-     * Returns X for a completed task or a space for an incomplete task.
-     */
     public String getStatusIcon() {
         return isDone ? "X" : " ";
     }
 
-    /**
-     * Returns the task description.
-     */
     public String getDescription() {
         return description;
     }
@@ -50,9 +44,6 @@ public class Task {
         isDone = false;
     }
 
-    /**
-     * Returns the completion marker and task description for display.
-     */
     @Override
     public String toString() {
         return "[" + getStatusIcon() + "] " + description;
