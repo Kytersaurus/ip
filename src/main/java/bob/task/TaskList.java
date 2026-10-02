@@ -64,6 +64,24 @@ public class TaskList {
     }
 
     /**
+     * Finds descriptions containing the keyword as a case-sensitive substring.
+     * Matches retain their original order and completion status. The returned list
+     * has its own collection but refers to the same task objects.
+     *
+     * @param keyword text to search for, including spaces when searching for a phrase.
+     * @return matching tasks, or an empty list if no descriptions match.
+     */
+    public TaskList findMatches(String keyword) {
+        List<Task> matches = new ArrayList<>();
+        for (Task task : tasks) {
+            if (task.getDescription().contains(keyword)) {
+                matches.add(task);
+            }
+        }
+        return new TaskList(matches);
+    }
+
+    /**
      * Removes and returns the task at the given zero-based index.
      *
      * @param index position of the task to remove.
